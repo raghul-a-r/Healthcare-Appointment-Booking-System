@@ -1,5 +1,81 @@
-INSERT INTO doctors (name, specialization, start_hour, end_hour)
-VALUES 
-('Dr. Smith', 'Cardiology', 9, 17),
-('Dr. Alice', 'Dermatology', 10, 18),
-('Dr. Kumar', 'Neurology', 8, 14);
+-- INSERT INTO doctors (name, specialization, start_hour, end_hour)
+-- VALUES 
+-- ('Dr. Smith', 'Cardiology', 9, 17),
+-- ('Dr. Alice', 'Dermatology', 10, 18),
+-- ('Dr. Kumar', 'Neurology', 8, 14);
+
+INSERT INTO doctors (name, specialization, start_hour, end_hour) VALUES
+('Dr. Arun', 'Cardiology', 9, 17),
+('Dr. Meena', 'Dermatology', 10, 18),
+('Dr. Ravi', 'Neurology', 8, 16),
+('Dr. Priya', 'Orthopedics', 9, 17),
+('Dr. Kiran', 'Pediatrics', 9, 15),
+('Dr. Suresh', 'Cardiology', 10, 18),
+('Dr. Anjali', 'Dermatology', 9, 17),
+('Dr. Mohan', 'Neurology', 8, 14),
+('Dr. Kavya', 'Orthopedics', 10, 18),
+('Dr. Deepak', 'Pediatrics', 9, 17),
+('Dr. Nisha', 'Cardiology', 9, 17),
+('Dr. Rohit', 'Dermatology', 10, 18),
+('Dr. Sneha', 'Neurology', 8, 16),
+('Dr. Varun', 'Orthopedics', 9, 17),
+('Dr. Asha', 'Pediatrics', 9, 15),
+('Dr. Vivek', 'Cardiology', 10, 18),
+('Dr. Neha', 'Dermatology', 9, 17),
+('Dr. Raj', 'Neurology', 8, 14),
+('Dr. Pooja', 'Orthopedics', 10, 18),
+('Dr. Amit', 'Pediatrics', 9, 17);
+
+
+INSERT INTO appointments (doctor_id, patient_name, slot) VALUES
+(1, 'John', '2026-04-25 09:00:00'),
+(2, 'Alice', '2026-04-25 09:30:00'),
+(3, 'Bob', '2026-04-25 10:00:00'),
+(4, 'Eva', '2026-04-25 10:30:00'),
+(5, 'Sam', '2026-04-25 11:00:00'),
+(6, 'Tom', '2026-04-25 11:30:00'),
+(7, 'Lily', '2026-04-25 12:00:00'),
+(8, 'Ryan', '2026-04-25 12:30:00'),
+
+(1, 'Chris', '2026-04-26 09:00:00'),
+(2, 'Nina', '2026-04-26 09:30:00'),
+(3, 'Paul', '2026-04-26 10:00:00'),
+(4, 'Zara', '2026-04-26 10:30:00'),
+(5, 'Leo', '2026-04-26 11:00:00'),
+(6, 'Maya', '2026-04-26 11:30:00'),
+(7, 'Noah', '2026-04-26 12:00:00'),
+(8, 'Emma', '2026-04-26 12:30:00'),
+
+(1, 'Jack', '2026-04-27 09:00:00'),
+(2, 'Olivia', '2026-04-27 09:30:00'),
+(3, 'Liam', '2026-04-27 10:00:00'),
+(4, 'Sophia', '2026-04-27 10:30:00'),
+(5, 'James', '2026-04-27 11:00:00'),
+(6, 'Ava', '2026-04-27 11:30:00'),
+(7, 'Lucas', '2026-04-27 12:00:00'),
+(8, 'Mia', '2026-04-27 12:30:00'),
+
+(1, 'Henry', '2026-04-28 09:00:00'),
+(2, 'Ella', '2026-04-28 09:30:00'),
+(3, 'David', '2026-04-28 10:00:00'),
+(4, 'Grace', '2026-04-28 10:30:00'),
+(5, 'Daniel', '2026-04-28 11:00:00'),
+(6, 'Chloe', '2026-04-28 11:30:00'),
+(7, 'Matthew', '2026-04-28 12:00:00'),
+(8, 'Aria', '2026-04-28 12:30:00'),
+
+(1, 'Joseph', '2026-04-29 09:00:00'),
+(2, 'Sofia', '2026-04-29 09:30:00'),
+(3, 'Andrew', '2026-04-29 10:00:00'),
+(4, 'Scarlett', '2026-04-29 10:30:00'),
+(5, 'Joshua', '2026-04-29 11:00:00'),
+(6, 'Victoria', '2026-04-29 11:30:00'),
+(7, 'Anthony', '2026-04-29 12:00:00'),
+(8, 'Madison', '2026-04-29 12:30:00'),
+
+(1, 'Samuel', '2026-04-30 09:00:00'),
+(2, 'Luna', '2026-04-30 09:30:00'),
+(3, 'Benjamin', '2026-04-30 10:00:00'),
+(4, 'Camila', '2026-04-30 10:30:00'),
+(5, 'Elijah', '2026-04-30 11:00:00'),
+(6, 'Harper', '2026-04-30 11:30:00');

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Home from "./pages/Home";
 import Booking from "./pages/Booking";
 import Dashboard from "./pages/Dashboard";
+import Stats from "./pages/Stats";   // ✅ MUST be here (top)
 
 function App() {
   const [page, setPage] = useState("home");
@@ -9,7 +10,6 @@ function App() {
   return (
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
       
-      {/* Back button ONLY for non-home pages */}
       {page !== "home" && (
         <button
           onClick={() => setPage("home")}
@@ -27,6 +27,7 @@ function App() {
       {page === "home" && <Home setPage={setPage} />}
       {page === "booking" && <Booking setPage={setPage} />}
       {page === "dashboard" && <Dashboard />}
+      {page === "stats" && <Stats setPage={setPage} />}  {/* ✅ proper placement */}
     </div>
   );
 }

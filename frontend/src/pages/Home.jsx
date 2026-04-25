@@ -26,6 +26,12 @@ function Home({ setPage }) {
       >
         Doctor Dashboard
       </button>
+      <p
+        style={{ marginTop: "30px", cursor: "pointer", color: "blue" }}
+        onClick={() => setPage("stats")}
+      >
+        View Stats
+      </p>
     </div>
   );
 }
