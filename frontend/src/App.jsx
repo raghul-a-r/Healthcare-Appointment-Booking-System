@@ -8,28 +8,21 @@ function App() {
   const [page, setPage] = useState("home");
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
-      
-      {page !== "home" && (
-        <button
-          onClick={() => setPage("home")}
-          style={{
-            padding: "10px 20px",
-            fontSize: "16px",
-            marginBottom: "20px",
-            cursor: "pointer"
-          }}
-        >
-          ⬅ Home
-        </button>
-      )}
+  <div className="page-container">
+    
+    {page !== "home" && (
+      <button onClick={() => setPage("home")}>
+        ⬅ Home
+      </button>
+    )}
 
-      {page === "home" && <Home setPage={setPage} />}
-      {page === "booking" && <Booking setPage={setPage} />}
-      {page === "dashboard" && <Dashboard />}
-      {page === "stats" && <Stats setPage={setPage} />}  {/* ✅ proper placement */}
-    </div>
-  );
+    {page === "home" && <Home setPage={setPage} />}
+    {page === "booking" && <Booking setPage={setPage} />}
+    {page === "dashboard" && <Dashboard />}
+    {page === "stats" && <Stats setPage={setPage} />}
+    
+  </div>
+);
 }
 
 export default App;
