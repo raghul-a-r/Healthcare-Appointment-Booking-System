@@ -20,12 +20,12 @@ function App() {
             cursor: "pointer"
           }}
         >
-          ⬅ Back
+          ⬅ Home
         </button>
       )}
 
       {page === "home" && <Home setPage={setPage} />}
-      {page === "booking" && <Booking />}
+      {page === "booking" && <Booking setPage={setPage} />}
       {page === "dashboard" && <Dashboard />}
     </div>
   );

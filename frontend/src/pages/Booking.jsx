@@ -1,35 +1,39 @@
 import { useEffect, useState } from "react";
 import API from "../api";
 
-function Booking() {
+function Booking({ setPage }) {
+  const [step, setStep] = useState("spec");
+
   const [doctors, setDoctors] = useState([]);
   const [specializations, setSpecializations] = useState([]);
+
   const [selectedSpec, setSelectedSpec] = useState("");
-  const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState("");
+
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
+
   const [date, setDate] = useState("");
   const [slots, setSlots] = useState([]);
+
+  // pagination
+  const [specLimit, setSpecLimit] = useState(20);
+  const [docLimit, setDocLimit] = useState(20);
 
   useEffect(() => {
     API.get("/doctors").then(res => {
       setDoctors(res.data);
 
-      // extract unique specializations
       const specs = [...new Set(res.data.map(d => d.specialization))];
       setSpecializations(specs);
     });
   }, []);
 
-  // filter doctors when specialization changes
   useEffect(() => {
     const filtered = doctors.filter(d => d.specialization === selectedSpec);
     setFilteredDoctors(filtered);
-    setSelectedDoctor("");
   }, [selectedSpec]);
 
   const fetchSlots = () => {
-    if (!selectedDoctor || !date) return;
-
     API.get(`/appointments/slots/${selectedDoctor}?date=${date}`)
       .then(res => setSlots(res.data));
   };
@@ -58,53 +62,117 @@ function Booking() {
     });
   };
 
+  const boxStyle = {
+    border: "1px solid black",
+    padding: "15px",
+    textAlign: "center",
+    cursor: "pointer",
+    backgroundColor: "#f9f9f9"
+  };
+
+  const gridStyle = {
+    display: "grid",
+    gridTemplateColumns: "repeat(5, 1fr)",
+    gap: "10px",
+    marginTop: "20px"
+  };
+
+  // ---------------- STEP 1 ----------------
+  if (step === "spec") {
+    return (
+      <div>
+        <button style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            marginBottom: "20px",
+            cursor: "pointer"
+          }} onClick={() => setPage("home")}>⬅ Previous Step</button>
+        <h2>Choose Specialization</h2>
+
+        <div style={gridStyle}>
+          {specializations.slice(0, specLimit).map((s, i) => (
+            <div
+              key={i}
+              style={boxStyle}
+              onClick={() => {
+                setSelectedSpec(s);
+                setStep("doctor");
+              }}
+            >
+              {s}
+            </div>
+          ))}
+        </div>
+
+        {specLimit < specializations.length && (
+          <button onClick={() => setSpecLimit(specLimit + 20)}>
+            Load More
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  // ---------------- STEP 2 ----------------
+  if (step === "doctor") {
+    return (
+      <div>
+        <button style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            marginBottom: "20px",
+            cursor: "pointer"
+          }} onClick={() => setStep("spec")}>⬅ Previous Step</button>
+        <h2>Pick Your Doctor</h2>
+        <p>Specialization: <b>{selectedSpec}</b></p>
+
+        <div style={gridStyle}>
+          {filteredDoctors.slice(0, docLimit).map((d) => (
+            <div
+              key={d.id}
+              style={boxStyle}
+              onClick={() => {
+                setSelectedDoctor(d.id);
+                setStep("slot");
+              }}
+            >
+              {d.name}
+            </div>
+          ))}
+        </div>
+
+        {docLimit < filteredDoctors.length && (
+          <button onClick={() => setDocLimit(docLimit + 20)}>
+            Load More
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  // ---------------- STEP 3 ----------------
   return (
     <div>
+      <button style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            marginBottom: "20px",
+            cursor: "pointer"
+          }} onClick={() => setStep("doctor")}>⬅ Previous Step</button>
+
       <h2>Book Appointment</h2>
-
-      {/* Specialization dropdown */}
-      <select
-        onChange={e => setSelectedSpec(e.target.value)}
-        style={{ padding: "10px", fontSize: "16px", margin: "10px" }}
-      >
-        <option>Select Specialization</option>
-        {specializations.map((s, i) => (
-          <option key={i} value={s}>{s}</option>
-        ))}
-      </select>
-
-      <br />
-
-      {/* Doctor dropdown */}
-      <select
-        onChange={e => setSelectedDoctor(e.target.value)}
-        disabled={!selectedSpec}
-        style={{ padding: "10px", fontSize: "16px", margin: "10px" }}
-      >
-        <option>Select Doctor</option>
-        {filteredDoctors.map(d => (
-          <option key={d.id} value={d.id}>{d.name}</option>
-        ))}
-      </select>
-
-      <br />
+      <p><b>Specialization:</b> {selectedSpec}</p>
+      <p><b>Doctor:</b> {selectedDoctor}</p>
 
       <input
         type="date"
         onChange={e => setDate(e.target.value)}
-        style={{ padding: "10px", fontSize: "16px", margin: "10px" }}
+        style={{ padding: "10px", fontSize: "16px" }}
       />
 
-      <br />
+      <br /><br />
 
-      <button
-        onClick={fetchSlots}
-        style={{ padding: "10px 20px", fontSize: "16px" }}
-      >
-        Load Slots
-      </button>
-
-      <h3>{date}</h3>
+      <button onClick={fetchSlots}>Load Slots</button>
 
       <div style={{
         display: "grid",
@@ -127,10 +195,7 @@ function Booking() {
             {s.is_booked ? (
               <div>{s.patient_name}</div>
             ) : (
-              <button
-                onClick={() => bookSlot(s.slot)}
-                style={{ padding: "5px 10px", marginTop: "5px" }}
-              >
+              <button onClick={() => bookSlot(s.slot)}>
                 Available
               </button>
             )}
