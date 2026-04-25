@@ -23,14 +23,21 @@ function Dashboard() {
       <input
         placeholder="Doctor ID"
         onChange={e => setDoctorId(e.target.value)}
+        style={{ padding: "10px", fontSize: "16px", margin: "10px" }}
       />
 
       <input
         type="date"
         onChange={e => setDate(e.target.value)}
+        style={{ padding: "10px", fontSize: "16px", margin: "10px" }}
       />
 
-      <button onClick={fetchSlots}>Load</button>
+      <button
+        onClick={fetchSlots}
+        style={{ padding: "10px 20px", fontSize: "16px" }}
+      >
+        Load
+      </button>
 
       <h3>{date}</h3>
 
@@ -51,12 +58,7 @@ function Dashboard() {
             }}
           >
             <div>{formatTime(s.slot)}</div>
-
-            {s.is_booked ? (
-              <div>{s.patient_name}</div>
-            ) : (
-              <div>Available</div>
-            )}
+            {s.is_booked ? <div>{s.patient_name}</div> : <div>Available</div>}
           </div>
         ))}
       </div>

@@ -8,8 +8,18 @@ function App() {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial" }}>
+      
+      {/* Back button ONLY for non-home pages */}
       {page !== "home" && (
-        <button onClick={() => setPage("home")}>
+        <button
+          onClick={() => setPage("home")}
+          style={{
+            padding: "10px 20px",
+            fontSize: "16px",
+            marginBottom: "20px",
+            cursor: "pointer"
+          }}
+        >
           ⬅ Back
         </button>
       )}

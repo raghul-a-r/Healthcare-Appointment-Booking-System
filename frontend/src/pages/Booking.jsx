@@ -3,13 +3,29 @@ import API from "../api";
 
 function Booking() {
   const [doctors, setDoctors] = useState([]);
+  const [specializations, setSpecializations] = useState([]);
+  const [selectedSpec, setSelectedSpec] = useState("");
+  const [filteredDoctors, setFilteredDoctors] = useState([]);
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [date, setDate] = useState("");
   const [slots, setSlots] = useState([]);
 
   useEffect(() => {
-    API.get("/doctors").then(res => setDoctors(res.data));
+    API.get("/doctors").then(res => {
+      setDoctors(res.data);
+
+      // extract unique specializations
+      const specs = [...new Set(res.data.map(d => d.specialization))];
+      setSpecializations(specs);
+    });
   }, []);
+
+  // filter doctors when specialization changes
+  useEffect(() => {
+    const filtered = doctors.filter(d => d.specialization === selectedSpec);
+    setFilteredDoctors(filtered);
+    setSelectedDoctor("");
+  }, [selectedSpec]);
 
   const fetchSlots = () => {
     if (!selectedDoctor || !date) return;
@@ -35,29 +51,58 @@ function Booking() {
       alert("Booked! ID: " + res.data.id);
       fetchSlots();
     })
-    .catch(err => alert(err.response.data.detail));
+    .catch(err => {
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) alert(detail[0].msg);
+      else alert(detail || "Error");
+    });
   };
 
   return (
     <div>
       <h2>Book Appointment</h2>
 
-      <select onChange={e => setSelectedDoctor(e.target.value)}>
-        <option>Select Doctor</option>
-        {doctors.map(d => (
-          <option key={d.id} value={d.id}>
-            {d.name} ({d.specialization})
-          </option>
+      {/* Specialization dropdown */}
+      <select
+        onChange={e => setSelectedSpec(e.target.value)}
+        style={{ padding: "10px", fontSize: "16px", margin: "10px" }}
+      >
+        <option>Select Specialization</option>
+        {specializations.map((s, i) => (
+          <option key={i} value={s}>{s}</option>
         ))}
       </select>
 
-      <br /><br />
+      <br />
 
-      <input type="date" onChange={e => setDate(e.target.value)} />
+      {/* Doctor dropdown */}
+      <select
+        onChange={e => setSelectedDoctor(e.target.value)}
+        disabled={!selectedSpec}
+        style={{ padding: "10px", fontSize: "16px", margin: "10px" }}
+      >
+        <option>Select Doctor</option>
+        {filteredDoctors.map(d => (
+          <option key={d.id} value={d.id}>{d.name}</option>
+        ))}
+      </select>
 
-      <br /><br />
+      <br />
 
-      <button onClick={fetchSlots}>Load Slots</button>
+      <input
+        type="date"
+        onChange={e => setDate(e.target.value)}
+        style={{ padding: "10px", fontSize: "16px", margin: "10px" }}
+      />
+
+      <br />
+
+      <button
+        onClick={fetchSlots}
+        style={{ padding: "10px 20px", fontSize: "16px" }}
+      >
+        Load Slots
+      </button>
 
       <h3>{date}</h3>
 
@@ -82,7 +127,10 @@ function Booking() {
             {s.is_booked ? (
               <div>{s.patient_name}</div>
             ) : (
-              <button onClick={() => bookSlot(s.slot)}>
+              <button
+                onClick={() => bookSlot(s.slot)}
+                style={{ padding: "5px 10px", marginTop: "5px" }}
+              >
                 Available
               </button>
             )}
